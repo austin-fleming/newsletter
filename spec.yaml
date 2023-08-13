@@ -1,0 +1,20 @@
+name: newsletter
+# san francisco server
+region: sfo
+services:
+  - name: newsletter
+    dockerfile_path: Dockerfile
+    source_dir: .
+    github:
+      branch: master
+      deploy_on_push: true
+      repo: austin-fleming/newsletter
+    health_check:
+      http_path: /ping
+    http_port: 8000
+    # TODO: increment after testing
+    instance_count: 1 
+    instance_size_slug: basic-xxs
+    routes:
+      - path: /
+

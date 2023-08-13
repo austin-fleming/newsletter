@@ -4,3 +4,7 @@
 # Secrets
 .env
 configuration.yaml
+configuration/**/*.yaml
+
+# DB
+.sqlx

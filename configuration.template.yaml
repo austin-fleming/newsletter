@@ -1,7 +1,0 @@
-application_port: 0
-database:
-  host: ""
-  port: 0
-  username: ""
-  password: ""
-  database_name: ""
