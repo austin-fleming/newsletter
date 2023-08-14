@@ -3,5 +3,5 @@
 ## Testing
 
 To view prettified logs:
-```TEST_LOG=true cargo test <name_of_test_file> | bunyan```
+```TEST_LOG=true cargo test | bunyan```
 May need to run ```cargo install bunyan```.

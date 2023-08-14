@@ -12,7 +12,6 @@ use uuid::Uuid;
 static TRACING: Lazy<()> = Lazy::new(|| {
     let default_filter_level = "info".to_string();
     let subscriber_name = "test".to_string();
-
     if std::env::var("TEST_LOG").is_ok() {
         let subscriber = get_subscriber(subscriber_name, default_filter_level, std::io::stdout);
         init_subscriber(subscriber);
@@ -43,7 +42,7 @@ pub async fn configure_database(config: &DatabaseSettings) -> PgPool {
         .await
         .expect("Failed to create database.");
 
-    let connection_pool = PgPool::connect_with(config.without_db())
+    let connection_pool = PgPool::connect_with(config.with_db())
         .await
         .expect("Failed to connect to Postgres.");
 
@@ -97,7 +96,7 @@ async fn subscribe_returns_200_for_valid_data() {
     let app = spawn_app().await;
     let client = reqwest::Client::new();
 
-    let sample_body = "name=frank%20herbert&email=dunemessiah%40gmail.com";
+    let sample_body = "name=s%20lem&email=solaris%40gmail.com";
 
     let response = client
         .post(format!("{}/subscriptions", app.address))
@@ -109,13 +108,14 @@ async fn subscribe_returns_200_for_valid_data() {
 
     assert_eq!(200, response.status().as_u16());
 
-    let saved = sqlx::query!("SELECT name, email FROM subscriptions")
-        .fetch_one(&app.db_pool)
-        .await
-        .expect("Failed to fetch saved subscription");
+    let saved =
+        sqlx::query!("SELECT name, email FROM subscriptions WHERE email='solaris@gmail.com'",)
+            .fetch_one(&app.db_pool)
+            .await
+            .expect("Failed to fetch saved subscription");
 
-    assert_eq!(saved.email, "dunemessiah@gmail.com");
-    assert_eq!(saved.name, "frank herbert");
+    assert_eq!(saved.email, "solaris@gmail.com");
+    assert_eq!(saved.name, "s lem");
 }
 
 #[tokio::test]
@@ -125,7 +125,7 @@ async fn subscribe_returns_400_when_no_data() {
 
     let test_cases = vec![
         ("name=frank%20herbert", "missing email"),
-        ("email=dunemessiah%40gmail.com", "missing name"),
+        ("email=childrenofdune%40gmail.com", "missing name"),
         ("", "missing name and email"),
     ];
 
@@ -168,7 +168,7 @@ async fn subscribe_returns_200_for_present_but_empty_fields() {
             .expect("Failed to execute request");
 
         assert_eq!(
-            200,
+            400,
             response.status().as_u16(),
             "The API did not return a 200 OK when the payload was {}.",
             description
