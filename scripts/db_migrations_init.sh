@@ -21,3 +21,7 @@ sqlx migrate add create_subscribers_table
 # You can create a Cargo build script to work around this with `sqlx migrate build-script`.
 
 # See: https://docs.rs/sqlx/0.5/sqlx/macro.migrate.html
+
+
+# Migrating to a target
+# DATABASE_URL=<connection-string> sqlx migrate run

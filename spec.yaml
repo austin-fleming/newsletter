@@ -17,4 +17,26 @@ services:
     instance_size_slug: basic-xxs
     routes:
       - path: /
-
+    envs:
+      - key: APP_DATABASE__USERNAME
+        scope: RUN_TIME
+        value: ${newsletter.USERNAME}
+      - key: APP_DATABASE__PASSWORD
+        scope: RUN_TIME
+        value: ${newsletter.PASSWORD}
+      - key: APP_DATABASE__HOST
+        scope: RUN_TIME
+        value: ${newsletter.HOST}
+      - key: APP_DATABASE__POST
+        scope: RUN_TIME
+        value: ${newsletter.PORT}
+      - key: APP_DATABASE__DATABASE_NAME
+        scope: RUN_TIME
+        value: ${newsletter.DATABASE}
+databases:
+  - engine: PG
+    name: newsletter-db
+    num_nodes: 1
+    size: db-s-dev-database
+    # Cannot specify with dev servers
+    # version: "14"

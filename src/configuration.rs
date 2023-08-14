@@ -1,19 +1,23 @@
-use actix_web::cookie::time::Date;
-
 use secrecy::{ExposeSecret, Secret};
+use serde_aux::field_attributes::deserialize_number_from_string;
+use sqlx::postgres::{PgConnectOptions, PgSslMode};
+use sqlx::ConnectOptions;
 
 #[derive(serde::Deserialize)]
 pub struct DatabaseSettings {
     pub host: Secret<String>,
-    pub port: Secret<u16>,
+    #[serde(deserialize_with = "deserialize_number_from_string")]
+    pub port: u16,
     pub username: Secret<String>,
     pub password: Secret<String>,
     pub database_name: Secret<String>,
+    pub require_ssl: bool,
 }
 
 #[derive(serde::Deserialize)]
 pub struct ApplicationSettings {
-    pub port: Secret<u16>,
+    #[serde(deserialize_with = "deserialize_number_from_string")]
+    pub port: u16,
     pub host: Secret<String>,
 }
 
@@ -71,31 +75,37 @@ pub fn get_configuration() -> Result<Settings, config::ConfigError> {
         .add_source(config::File::from(
             configuration_directory.join(environment_filename),
         ))
+        .add_source(
+            config::Environment::with_prefix("APP")
+                .prefix_separator("_")
+                .separator("__"),
+        )
         .build()?;
 
     settings.try_deserialize::<Settings>()
 }
 
 impl DatabaseSettings {
-    pub fn connection_string(&self) -> Secret<String> {
-        Secret::new(format!(
-            "postgres://{}:{}@{}:{}/{}",
-            self.username.expose_secret(),
-            self.password.expose_secret(),
-            self.host.expose_secret(),
-            self.port.expose_secret(),
-            self.database_name.expose_secret()
-        ))
+    pub fn without_db(&self) -> PgConnectOptions {
+        let ssl_mode = if self.require_ssl {
+            PgSslMode::Require
+        } else {
+            PgSslMode::Prefer
+        };
+
+        PgConnectOptions::new()
+            .host(self.host.expose_secret())
+            .username(self.host.expose_secret())
+            .password(self.password.expose_secret())
+            .port(self.port)
+            .ssl_mode(ssl_mode)
     }
 
-    // Allows connecting to postgres instance without accessing a particular DB
-    pub fn connection_string_without_db(&self) -> Secret<String> {
-        Secret::new(format!(
-            "postgres://{}:{}@{}:{}",
-            self.username.expose_secret(),
-            self.password.expose_secret(),
-            self.host.expose_secret(),
-            self.port.expose_secret()
-        ))
+    pub fn with_db(&self) -> PgConnectOptions {
+        let options = self
+            .without_db()
+            .database(&self.database_name.expose_secret());
+
+        options.log_statements(tracing_log::log::LevelFilter::Trace)
     }
 }

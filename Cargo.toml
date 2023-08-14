@@ -17,6 +17,7 @@ chrono = { version = "0.4.26", default-features = false, features = ["clock"] }
 config = "0.13.3"
 secrecy = { version = "0.8.0", features = ["serde"] }
 serde = { version = "1.0.183", features = ["derive"] }
+serde-aux = "4.2.0"
 tokio = { version = "1.30.0", features = ["macros", "rt-multi-thread"] }
 tracing = { version = "0.1.37", features = ["log"] }
 tracing-actix-web = "0.7.6"
