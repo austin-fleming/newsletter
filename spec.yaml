@@ -20,19 +20,19 @@ services:
     envs:
       - key: APP_DATABASE__USERNAME
         scope: RUN_TIME
-        value: ${newsletter.USERNAME}
+        value: ${newsletter-db.USERNAME}
       - key: APP_DATABASE__PASSWORD
         scope: RUN_TIME
-        value: ${newsletter.PASSWORD}
+        value: ${newsletter-db.PASSWORD}
       - key: APP_DATABASE__HOST
         scope: RUN_TIME
-        value: ${newsletter.HOST}
+        value: ${newsletter-db.HOST}
       - key: APP_DATABASE__POST
         scope: RUN_TIME
-        value: ${newsletter.PORT}
+        value: ${newsletter-db.PORT}
       - key: APP_DATABASE__DATABASE_NAME
         scope: RUN_TIME
-        value: ${newsletter.DATABASE}
+        value: ${newsletter-db.DATABASE}
 databases:
   - engine: PG
     name: newsletter-db
