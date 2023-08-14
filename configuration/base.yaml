@@ -1,2 +1,9 @@
+# NOTE: this gets replaced on production server, but required to build
 application:
   port: 8000
+database:
+  host: "db.czuseevtoxxqjdzrwoma.supabase.co"
+  port: 5432
+  username: "postgres"
+  password: "password"
+  database_name: "postgres"
