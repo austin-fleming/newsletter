@@ -3,6 +3,8 @@
 
 # Secrets
 .env
+.env.local
+.env.production
 # configuration.yaml
 # configuration/**/*.yaml
 
