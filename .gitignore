@@ -3,8 +3,11 @@
 
 # Secrets
 .env
-configuration.yaml
-configuration/**/*.yaml
+# configuration.yaml
+# configuration/**/*.yaml
+
+# Old files
+__deprecated__/**
 
 # DB
 .sqlx

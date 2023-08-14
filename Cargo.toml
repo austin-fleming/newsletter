@@ -15,6 +15,7 @@ path = "src/main.rs"
 actix-web = "4.3.1"
 chrono = { version = "0.4.26", default-features = false, features = ["clock"] }
 config = "0.13.3"
+dotenv = "0.15.0"
 secrecy = { version = "0.8.0", features = ["serde"] }
 serde = { version = "1.0.183", features = ["derive"] }
 serde-aux = "4.2.0"

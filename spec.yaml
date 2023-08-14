@@ -17,6 +17,7 @@ services:
     instance_size_slug: basic-xxs
     routes:
       - path: /
+    # https://docs.digitalocean.com/products/app-platform/how-to/use-environment-variables/#resource-specific-variables
     envs:
       - key: APP_DATABASE__USERNAME
         scope: RUN_TIME
@@ -33,6 +34,12 @@ services:
       - key: APP_DATABASE__DATABASE_NAME
         scope: RUN_TIME
         value: ${newsletter-db.DATABASE}
+      - key: APP_APPLICATION__HOST
+        scope: RUN_TIME
+        value: ${_self.PRIVATE_DOMAIN}
+      - key: APP_APPLICATION__PORT
+        scope: RUN_TIME
+        value: ${_self.PRIVATE_PORT}
 databases:
   - engine: PG
     name: newsletter-db
