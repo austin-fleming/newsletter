@@ -1,6 +1,3 @@
-use std::env;
-
-use dotenv::dotenv;
 use secrecy::{ExposeSecret, Secret};
 use serde_aux::field_attributes::deserialize_number_from_string;
 use sqlx::postgres::{PgConnectOptions, PgSslMode};
@@ -61,8 +58,6 @@ impl TryFrom<String> for Environment {
 }
 
 pub fn get_configuration() -> Result<Settings, config::ConfigError> {
-    dotenv().ok();
-    
     let base_path = std::env::current_dir().expect("Failed to determine the current directory");
     let configuration_directory = base_path.join("configuration");
 
@@ -100,7 +95,7 @@ impl DatabaseSettings {
 
         PgConnectOptions::new()
             .host(self.host.expose_secret())
-            .username(self.host.expose_secret())
+            .username(self.username.expose_secret())
             .password(self.password.expose_secret())
             .port(self.port)
             .ssl_mode(ssl_mode)

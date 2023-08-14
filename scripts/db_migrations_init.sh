@@ -24,4 +24,5 @@ sqlx migrate add create_subscribers_table
 
 
 # Migrating to a target
-# DATABASE_URL=<connection-string> sqlx migrate run
+# `DATABASE_URL=<connection-string> sqlx migrate run`
+#      -- "trusted sources" needs to be turned off in Digital Ocean to do this from local machine.

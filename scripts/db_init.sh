@@ -12,11 +12,11 @@ if ![ command -v sqlx >/dev/null 2>&1 ]; then
     exit 1
 fi
 
-DB_USER=${POSTGRES_USER}
-DB_PASSWORD="${POSTGRES_PASSWORD}"
-DB_NAME="${POSTGRES_DB}"
-DB_PORT="${POSTGRES_PORT}"
-DB_HOST="${POSTGRES_HOST}"
+DB_USER="${POSTGRES_USER:=postgres}"
+DB_PASSWORD="${POSTGRES_PASSWORD:=password}"
+DB_NAME="${POSTGRES_DB:=newsletter}"
+DB_PORT="${POSTGRES_PORT:=5432}"
+DB_HOST="${POSTGRES_HOST:=localhost}"
 
 docker run \
     -e POSTGRES_USER=${DB_USER} \
@@ -46,5 +46,3 @@ sqlx database create
 
 # NOTES:
 # `chmod +x scripts/init_db.sh` for permissions
-
-# source .env

@@ -2,7 +2,7 @@ name: newsletter
 # san francisco server
 region: sfo
 services:
-  - name: newsletter
+  - name: newsletter-server
     dockerfile_path: Dockerfile
     source_dir: .
     github:
