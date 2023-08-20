@@ -3,6 +3,7 @@
         "actix",
         "dotenv",
         "reqwest",
-        "sqlx"
+        "sqlx",
+        "wiremock"
     ]
 }

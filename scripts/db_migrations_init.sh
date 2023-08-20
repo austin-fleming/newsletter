@@ -8,6 +8,7 @@ DATABASE_URL=postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAM
 export DATABASE_URL
 
 sqlx migrate add create_subscribers_table
+sqlx migrate add add_status_subscriptions;
 
 # TODO: Add the following to the migration file:
 # Congratulations on creating your first migration!
