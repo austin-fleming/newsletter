@@ -1,0 +1,15 @@
+/target
+.DS_Store
+
+# Secrets
+.env
+.env.local
+.env.production
+# configuration.yaml
+# configuration/**/*.yaml
+
+# Old files
+**/__deprecated__/**/*
+
+# DB
+.sqlx

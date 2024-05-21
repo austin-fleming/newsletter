@@ -1,0 +1,14 @@
+# NOTE: this gets replaced on production server, but required to build
+application:
+  port: 8000
+database:
+  host: "localhost"
+  port: 5432
+  username: "postgres"
+  password: "password"
+  database_name: "newsletter"
+email_client:
+  base_url: "localhost"
+  sender_email: "test@gmail.com"
+  authorization_token: "mock-token-value"
+  timeout_milliseconds: 10000
